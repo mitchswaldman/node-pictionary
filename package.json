@@ -1,0 +1,16 @@
+{
+  "name": "node-drawing-game",
+  "version": "1.0.0",
+  "description": "pictionary!",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies":{
+  		"socket.io": "*",
+  		"node-static":"0.7.7",
+  		"express" : "*"
+  	},
+  "author": "",
+  "license": "ISC"
+}
