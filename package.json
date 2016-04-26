@@ -10,7 +10,8 @@
   "dependencies":{
   		"socket.io": "*",
   		"node-static":"0.7.7",
-  		"express" : "*"
+  		"express" : "*",
+      "underscore" : "*"
   	},
   "author": "",
   "license": "ISC"

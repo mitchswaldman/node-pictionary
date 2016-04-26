@@ -13,7 +13,8 @@ $(function(){
 		win = $(window),
 		canvas = $('#paper'),
 		ctx = canvas[0].getContext('2d'),
-		instructions = $('#instructions');
+		instructions = $('#instructions'),
+		username_button = $('#username_button');
 	
 	// Generate an unique ID
 	var id = Math.round($.now()*Math.random());
@@ -94,6 +95,10 @@ $(function(){
 		}
 	});
 
+	username_button.on('click', function(e){
+		var username = $('input[name="username"]').val();
+		socket.emit('signon', {username: username});
+	});
 	// Remove inactive clients after 10 seconds of inactivity
 	setInterval(function(){
 		

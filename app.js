@@ -41,6 +41,9 @@ var express = require('express');
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var _ = require('underscore');
+var Game = require('./Game');
+var games = [];
 
 server.listen(process.env.PORT || 8080);
 app.use(express.static(__dirname + '/public'));
@@ -51,6 +54,13 @@ app.get('/', function (req, res) {
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
+  console.log(socket);
+  socket.on('signon', function(data){
+  	console.log("User signed on: " + data.username);
+  	var game = _.find(games, function(game){return game.hasRoom;}) || new Game();
+  	socket.game = game;
+  	game.addMember(socket, data.username);
+  });
   socket.on('mousemove', function (data) {
     console.log(data);
     socket.broadcast.emit('moving', data);
