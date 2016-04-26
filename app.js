@@ -44,7 +44,7 @@ var io = require('socket.io')(server);
 var _ = require('underscore');
 var Game = require('./Game');
 var games = [];
-var socketDict = [];
+var socketDict = {};
 server.listen(process.env.PORT || 8080);
 app.use(express.static(__dirname + '/public'));
 
@@ -54,7 +54,7 @@ app.get('/', function (req, res) {
 
 io.on('connection', function (socket) {
   socket.emit('news', { hello: 'world' });
-  //console.log(socket);
+
   socket.on('signon', function(data){
   	console.log("User signed on: " + data.username);
   	var game = _.find(games, function(game){return game.hasRoom;});
@@ -62,14 +62,17 @@ io.on('connection', function (socket) {
   		game = new Game();
   		games.push(game);
   	}
-  	var id = socket.id;
-  	socketDict.push({ id : game});
   	game.addMember(socket, data.username);
-  	console.log("Found game: "+ (game));
-  	console.log("All games: " + (games));
+  	var id = socket.id;
+  	socketDict[id]=  game;
   });
   socket.on('mousemove', function (data) {
     console.log(data);
-    socket.broadcast.emit('moving', data);
+
+    var game = socketDict[socket.id];
+    if(typeof game != 'undefined'){
+    	game.mouseMove(socket, data);
+    }
+    //socket.broadcast.emit('moving', data);
   });
 });

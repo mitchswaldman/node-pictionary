@@ -25,7 +25,7 @@ Game.prototype.addMember = function(socket, username) {
 		id: socket.id,
 		isDrawer: false
 	};
-	console.log("Found team: " + team);
+
 	if(typeof team != 'undefined'){
 		team.members.push(member);
 		if(this.isFull()){
@@ -37,10 +37,10 @@ Game.prototype.addMember = function(socket, username) {
 		var name = this.teams.length == 0 ? "Red Team" : "Blue Team";
 		var team = {
 			name: name,
+			score: 0,
 			members: [member]
 		}
 		this.teams.push(team);
-		console.log("Current teams: " + (this.teams));
 	}
 }
 
@@ -49,4 +49,13 @@ Game.prototype.isFull = function(){
 			_.every(this.teams, function(t){return t.members.length >= Game.MAX_MEMBERS_PER_TEAM;});
 }
 
+Game.prototype.mouseMove = function(socket, data){
+	var team = _.find(this.teams, function(t){ return _.some(t.members, function(member){return member.socket == socket;})});
+	_.each(team.members, function(member){
+		if(member.socket != socket){
+			console.log('emitting to team member with socket id: ' + member.socket.id);
+			member.socket.emit('moving', data);
+		}
+	})	
+}
 module.exports = Game;
