@@ -26,7 +26,36 @@ $(function(){
 	var cursors = {};
 
 	var socket = io.connect('/');
-	
+	socket.on('roundstart', function(data){
+		console.log('round start');
+		console.log(data);
+	});
+
+	socket.on('gamepause', function(data){
+		console.log('game pause');
+		console.log(data);
+	});
+
+	socket.on('roundover', function(data){
+		console.log('round over');
+		console.log(data);
+	});
+
+	socket.on('gametime', function(data){
+		console.log('game time');
+		console.log(data);
+	});
+
+	socket.on('drawingreview', function(data){
+		console.log('drawing review');
+		console.log(data);
+	});
+
+	socket.on('gameover', function(data){
+		console.log('gameover');
+		console.log(data);
+	});
+
 	socket.on('moving', function (data) {
 		
 		if(! (data.id in clients)){

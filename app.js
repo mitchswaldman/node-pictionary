@@ -63,9 +63,28 @@ io.on('connection', function (socket) {
   		games.push(game);
   	}
   	game.addMember(socket, data.username);
-  	var id = socket.id;
-  	socketDict[id]=  game;
+  	socketDict[socket.id]=  game;
   });
+
+  socket.on('error', function(data){
+  	console.log(data);
+  });
+
+  socket.on('disconnect', function(data){
+  	var game = socketDict[socket.id];
+  	if(typeof game != 'undefined') {
+	  	game.dropMember(socket);
+	  	game.gamePause();
+  	}
+  });
+
+  socket.on('snapshot', function(data){
+  	var game = socketDict[socket.id];
+  	if(typeof game != 'undefined') {
+  		game.storeSnapshot(socket, data);
+  	}
+  });
+
   socket.on('mousemove', function (data) {
     console.log(data);
 
