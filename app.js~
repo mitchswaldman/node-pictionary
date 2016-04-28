@@ -124,7 +124,6 @@ io.on('connection', function (socket) {
     if(typeof game != 'undefined'){
     	game.mouseMove(socket, data);
     }
-    // will socket broadcast, emit to only members within the game or all games?
-    //socket.broadcast.emit('moving', data);
+    socket.broadcast.emit('moving', data);
   });
 });
