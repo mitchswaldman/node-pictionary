@@ -58,8 +58,6 @@ var Schema_Word = new mongoose.Schema({
 });
 server.listen(process.env.PORT || 8080);
 
-// app.use(express.bodyParser());
-// app.use(express.methodOverride());
 app.use(express.static(__dirname + '/public'));
 
 mongoose.connect(URL);
@@ -81,19 +79,6 @@ mongoose.connection.once('open', function(){
     });
 });
 console.log(mongoose.connection.readyState);
-
-// app.get('/', function(req, res){
-    
-// });
-// var data = collection.find({});
-// console.log(data);
-
-// collection.find({}, function(err, words) {
-//     if (err) {
-//         console.log("ERROR!!");
-//     }
-//         console.log(words);
-// });
 
 app.get('/', function (req, res) {
   res.sendFile('/index.html');
