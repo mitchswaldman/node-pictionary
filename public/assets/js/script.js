@@ -1,3 +1,5 @@
+// var _ = require('underscore');
+
 $(function(){
 
 	// This demo depends on the canvas element
@@ -16,7 +18,8 @@ $(function(){
 		ctx = canvas[0].getContext('2d'),
 		instructions = $('#instructions'),
 		username_entry = $('#username_entry'),
-		username_button = $('#username_button');
+		username_button = $('#username_button'),
+        timer = $('#timer');
 	
 	// Generate an unique ID
 	var id = Math.round($.now()*Math.random());
@@ -30,19 +33,23 @@ $(function(){
 	var socket = io.connect('/');
 	socket.on('roundstart', function(data){
 		// var team = _.first(data.game.teams, function(team){
-		// 	return _.some(team.members, function(member){
-		// 		return member.socketId.contains(socket.id);
-		// 	}
-		// });
+        //     _.some(team.members, function(member){
+        //         var member = member.socketId.contains(socket.id);
+        //     });
+        // });
 		// update a div with team.score
 		// can get a reference to the member object
-		if(member.isDrawer) enable the canvas.
+		// if(member.isDrawer) enable the canvas.
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('word').innerHTML = data.game.word;
 		console.log('round start');
 		console.log(data);
 	});
 
 	socket.on('gamepause', function(data){
 		console.log('game pause');
+        document.getElementById('time').innerHTML = '';
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 		console.log(data);
 	});
 
@@ -53,6 +60,7 @@ $(function(){
 
 	socket.on('gametime', function(data){
 		console.log('game time');
+        document.getElementById('time').innerHTML = data.secondsLeft;
 		console.log(data);
 	});
 

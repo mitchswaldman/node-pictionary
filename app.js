@@ -111,7 +111,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('guess', function(data){
-  	var game - socketDict[socket.id];
+  	var game = socketDict[socket.id];
   	if(typeof game != 'undefined') {
   		game.checkGuess(socket, data);
   	}

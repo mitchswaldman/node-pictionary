@@ -65,7 +65,7 @@ h1{
 }
 
 h2{
-	font-size: 13px;
+	font-size: 16px;
 	font-weight: normal;
 	padding-bottom: 8px;
 }
@@ -75,6 +75,26 @@ h3{
 	font-weight: normal;
 	font-style: italic;
 	color: #999;
+}
+
+#timer {
+    position: fixed;
+	width: 150px;
+	height: 100px;
+    text-align: center;
+	top: 0%;
+	left: 50%;
+	color: #555;
+}
+
+#draw {
+    position: fixed;
+	width: 150px;
+	height: 150px;
+    text-align: center;
+    bottom: 0%;
+	left: 50%;
+	color: #555;
 }
 
 #cursors{

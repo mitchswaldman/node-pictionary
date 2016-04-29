@@ -121,7 +121,7 @@ Game.prototype.gameTime = function(){
 			};
 			self.broadcastToGame('gametime', data);
 			seconds--;
-			if(seconds == 0) {
+			if(seconds <= 0) {
 				clearInterval(self.gameTimeInterval);
 				self.roundOver.call(self, null);
 			}
