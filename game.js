@@ -25,7 +25,7 @@ Game.prototype.addMember = function(socket, username) {
 	var team = _.find(this.teams, function(team){return team.members.length < Game.MAX_MEMBERS_PER_TEAM});
 	var member = {
 		username: username,
-		socketId: socket.id,
+		socketId: socket.id, //Id will have a '#/' appended to the id.
 		isDrawer: false
 	};
 	if(typeof team != 'undefined'){
@@ -58,6 +58,14 @@ Game.prototype.dropMember = function(socket) {
 Game.prototype.isFull = function(){
 	return this.teams.length >= Game.MAX_TEAMS_PER_GAME &&
 			_.every(this.teams, function(t){return t.members.length >= Game.MAX_MEMBERS_PER_TEAM;});
+}
+
+Game.prototype.checkGuess = function(socket, data) {
+	if(data.guess == this.word) {
+		var team = _.find(this.teams, function(t){ return _.some(t.members, function(member){return member.socketId == socket.id;})});
+		team.score++;
+		this.roundOver(team.name);	
+	}
 }
 
 Game.prototype.storeSnapshot = function(socket, data){

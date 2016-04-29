@@ -6,6 +6,7 @@ $(function(){
 		return false;
 	}
 
+
 	// The URL of your web server (the port is set in app.js)
 	var url = 'http://localhost:8080';
 
@@ -28,6 +29,14 @@ $(function(){
 
 	var socket = io.connect('/');
 	socket.on('roundstart', function(data){
+		// var team = _.first(data.game.teams, function(team){
+		// 	return _.some(team.members, function(member){
+		// 		return member.socketId.contains(socket.id);
+		// 	}
+		// });
+		// update a div with team.score
+		// can get a reference to the member object
+		if(member.isDrawer) enable the canvas.
 		console.log('round start');
 		console.log(data);
 	});
