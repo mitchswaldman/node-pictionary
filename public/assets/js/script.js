@@ -19,7 +19,9 @@ $(function(){
 		instructions = $('#instructions'),
 		username_entry = $('#username_entry'),
 		username_button = $('#username_button'),
-        timer = $('#timer');
+        timer = $('#timer'),
+        guess_word = $('#guess_word'),
+        guess_button = $('guess_button');
 	
 	// Generate an unique ID
 	var id = Math.round($.now()*Math.random());
@@ -32,7 +34,7 @@ $(function(){
 
 	var socket = io.connect('/');
 	socket.on('roundstart', function(data){
-		// var team = _.first(data.game.teams, function(team){
+        // var team = _.first(data.game.teams, function(team){
         //     _.some(team.members, function(member){
         //         var member = member.socketId.contains(socket.id);
         //     });
@@ -40,7 +42,7 @@ $(function(){
 		// update a div with team.score
 		// can get a reference to the member object
 		// if(member.isDrawer) enable the canvas.
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, 1900, 1000); // Hard-coded length and width for now.
         document.getElementById('word').innerHTML = data.game.word;
 		console.log('round start');
 		console.log(data);
@@ -147,6 +149,13 @@ $(function(){
 		socket.emit('signon', {username: username});
 		username_entry.fadeOut();
 	});
+    
+    guess_button.on('click', function(e) {
+        var guess = $('input[name="guess"]').val();
+        socket.emit('guess', {guess: guess});
+        guess_word.fadeOut();
+    });
+    
 	// Remove inactive clients after 10 seconds of inactivity
 	setInterval(function(){
 		
@@ -165,9 +174,11 @@ $(function(){
 	},10000);
 
 	function drawLine(fromx, fromy, tox, toy){
+        ctx.beginPath();
 		ctx.moveTo(fromx, fromy);
 		ctx.lineTo(tox, toy);
 		ctx.stroke();
+        ctx.closePath();
 	}
 
 });

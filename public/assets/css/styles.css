@@ -97,6 +97,22 @@ h3{
 	color: #555;
 }
 
+#guess_word {
+    position: fixed;
+	background-color: rgba(255, 255, 255, 0.7);
+    visibility: hidden;
+	width: 400px;
+	height: 78px;
+	top: 50%;
+	left: 50%;
+	margin: -120px 0 0 -225px;
+	text-align: center;
+	padding: 25px;
+	border-radius: 10px;
+	box-shadow: 0 0 3px rgba(100, 100, 100, 0.1), 0 3px 1px #D4D4D4;
+	color: #555;
+}
+
 #cursors{
 	position:relative;
 }
