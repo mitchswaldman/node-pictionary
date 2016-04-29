@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var WordRetrieval = require('./word-retrival');
 
 function Game(){
 	this.id = Date.now();
@@ -61,7 +62,7 @@ Game.prototype.isFull = function(){
 }
 
 Game.prototype.checkGuess = function(socket, data) {
-	if(data.guess == this.word) {
+	if(data.guess.toLowerCase().trim() == this.word) {
 		var team = _.find(this.teams, function(t){ return _.some(t.members, function(member){return member.socketId == socket.id;})});
 		team.score++;
 		this.roundOver(team.name);	
@@ -90,7 +91,7 @@ Game.prototype.roundStart = function(){
 	console.log('round start');
 	clearTimeout(this.roundoverTimeout);
 	this.setDrawers();
-	this.word = "dog";
+	this.word = this.nextWord();
 	var data = {
 		game : {
 			teams : this.teams,
@@ -197,4 +198,10 @@ Game.prototype.broadcastToGame = function(event, data){
 	});
 	
 }
+
+Game.prototype.nextWord = function(){
+	var wordRetriever = new WordRetrieval();
+	return wordRetriever.getWord();
+}
+
 module.exports = Game;
