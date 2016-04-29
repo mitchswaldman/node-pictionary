@@ -45,40 +45,48 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var _ = require('underscore');
 var mongoose = require('mongoose');
-var URL = 'mongodb://172username:172password@ec2-52-32-28-93.us-west-2.compute.amazonaws.com:27017/pictionarydb';
+//var URL = 'mongodb://172username:172password@ec2-52-32-28-93.us-west-2.compute.amazonaws.com:27017/pictionarydb';
 var Game = require('./Game');
 var games = [];
 var socketDict = {};
-var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
-var Schema_Word = new mongoose.Schema({
-    _id     : ObjectId,
-    word_id : Number,
-    word    : String
-});
+var database = require('./Database');
+var wordRetrival = require('./word-retrival');
+// var Schema = mongoose.Schema,
+//     ObjectId = Schema.ObjectId;
+// var Schema_Word = new mongoose.Schema({
+//     _id     : ObjectId,
+//     word_id : Number,
+//     word    : String
+// });
 server.listen(process.env.PORT || 8080);
 
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect(URL);
-// CONNECTION EVENTS // When successfully connected 
-mongoose.connection.on('connected', function () { console.log('Mongoose default connection open to ' + URL); }); 
-// If the connection throws an error 
-mongoose.connection.on('error',function (err) { console.log('Mongoose default connection error: ' + err); }); 
-// When the connection is disconnected 
-mongoose.connection.on('disconnected', function () { console.log('Mongoose default connection disconnected'); });
+var db = new database();
+db.connectTo();
 
-mongoose.connection.once('open', function(){
-    console.log("CONNECTED");
-    var collection = mongoose.model('pictionary_collection', Schema_Word, 'pictionary_collection');
-    collection.find(function(err, word){
-        if (err) {
-            console.log(err);
-        } 
-        console.log(word);
-    });
-});
-console.log(mongoose.connection.readyState);
+var wr = new wordRetrival();
+// retrive random word from db
+wr.getWord();
+// mongoose.connect(URL);
+// // CONNECTION EVENTS // When successfully connected 
+// mongoose.connection.on('connected', function () { console.log('Mongoose default connection open to ' + URL); }); 
+// // If the connection throws an error 
+// mongoose.connection.on('error',function (err) { console.log('Mongoose default connection error: ' + err); }); 
+// // When the connection is disconnected 
+// mongoose.connection.on('disconnected', function () { console.log('Mongoose default connection disconnected'); });
+
+// mongoose.connection.once('open', function(){
+//     console.log("CONNECTED");
+//     var collection = mongoose.model('pictionary_collection', Schema_Word, 'pictionary_collection');
+//     collection.find(function(err, word){
+//         if (err) {
+//             console.log(err);
+//         } 
+//         console.log(word);
+//     });
+// });
+// console.log(mongoose.connection.readyState);
 
 app.get('/', function (req, res) {
   res.sendFile('/index.html');
