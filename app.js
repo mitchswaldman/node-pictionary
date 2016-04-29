@@ -67,7 +67,17 @@ db.connectTo();
 
 var wr = new wordRetrival();
 // retrive random word from db
-wr.getWord();
+var testword;
+for (var i = 0; i < 5; i++) {
+  testword = wr.getWord();
+  testword.exec(function(err, wordString){
+    if (err) {return console.log(err)};
+    wordString.forEach(function(wrd){
+      console.log(wrd.word);
+    });
+  });
+};
+
 // mongoose.connect(URL);
 // // CONNECTION EVENTS // When successfully connected 
 // mongoose.connection.on('connected', function () { console.log('Mongoose default connection open to ' + URL); }); 
