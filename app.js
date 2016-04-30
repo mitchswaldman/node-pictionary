@@ -45,40 +45,58 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var _ = require('underscore');
 var mongoose = require('mongoose');
-var URL = 'mongodb://172username:172password@ec2-52-32-28-93.us-west-2.compute.amazonaws.com:27017/pictionarydb';
-var Game = require('./Game');
+//var URL = 'mongodb://172username:172password@ec2-52-32-28-93.us-west-2.compute.amazonaws.com:27017/pictionarydb';
+var Game = require('./game');
 var games = [];
 var socketDict = {};
-var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
-var Schema_Word = new mongoose.Schema({
-    _id     : ObjectId,
-    word_id : Number,
-    word    : String
-});
+var database = require('./database');
+var wordRetrival = require('./word-retrival');
+// var Schema = mongoose.Schema,
+//     ObjectId = Schema.ObjectId;
+// var Schema_Word = new mongoose.Schema({
+//     _id     : ObjectId,
+//     word_id : Number,
+//     word    : String
+// });
 server.listen(process.env.PORT || 8080);
 
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect(URL);
-// CONNECTION EVENTS // When successfully connected 
-mongoose.connection.on('connected', function () { console.log('Mongoose default connection open to ' + URL); }); 
-// If the connection throws an error 
-mongoose.connection.on('error',function (err) { console.log('Mongoose default connection error: ' + err); }); 
-// When the connection is disconnected 
-mongoose.connection.on('disconnected', function () { console.log('Mongoose default connection disconnected'); });
+var db = new database();
+db.connectTo();
 
-mongoose.connection.once('open', function(){
-    console.log("CONNECTED");
-    var collection = mongoose.model('pictionary_collection', Schema_Word, 'pictionary_collection');
-    collection.find(function(err, word){
-        if (err) {
-            console.log(err);
-        } 
-        console.log(word);
+var wr = new wordRetrival();
+// retrive random word from db
+var testword;
+for (var i = 0; i < 5; i++) {
+  testword = wr.getWord();
+  testword.exec(function(err, wordString){
+    if (err) {return console.log(err)};
+    wordString.forEach(function(wrd){
+      console.log(wrd.word);
     });
-});
-console.log(mongoose.connection.readyState);
+  });
+};
+
+// mongoose.connect(URL);
+// // CONNECTION EVENTS // When successfully connected 
+// mongoose.connection.on('connected', function () { console.log('Mongoose default connection open to ' + URL); }); 
+// // If the connection throws an error 
+// mongoose.connection.on('error',function (err) { console.log('Mongoose default connection error: ' + err); }); 
+// // When the connection is disconnected 
+// mongoose.connection.on('disconnected', function () { console.log('Mongoose default connection disconnected'); });
+
+// mongoose.connection.once('open', function(){
+//     console.log("CONNECTED");
+//     var collection = mongoose.model('pictionary_collection', Schema_Word, 'pictionary_collection');
+//     collection.find(function(err, word){
+//         if (err) {
+//             console.log(err);
+//         } 
+//         console.log(word);
+//     });
+// });
+// console.log(mongoose.connection.readyState);
 
 app.get('/', function (req, res) {
   res.sendFile('/index.html');
@@ -110,6 +128,13 @@ io.on('connection', function (socket) {
   	}
   });
 
+  socket.on('guess', function(data){
+  	var game = socketDict[socket.id];
+  	if(typeof game != 'undefined') {
+  		game.checkGuess(socket, data);
+  	}
+  });
+
   socket.on('snapshot', function(data){
   	var game = socketDict[socket.id];
   	if(typeof game != 'undefined') {
@@ -124,7 +149,12 @@ io.on('connection', function (socket) {
     if(typeof game != 'undefined'){
     	game.mouseMove(socket, data);
     }
-    // will socket broadcast, emit to only members within the game or all games?
-    //socket.broadcast.emit('moving', data);
+  });
+   socket.on('gamepause', function() {
+	//socket.broadcast.emit('gamepause');
+	game.gamePause();
+  });
+   socket.on('ClientObj', function(data) {
+	//socket.broadcast.emit('Guess : '
   });
 });

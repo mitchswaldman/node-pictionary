@@ -1,13 +1,18 @@
-
 var express = require('express');
 var app = require('express')();
 var bodyParser = require('body-parser');
 
 var client = require('http').Client(app);
 var io = require('socket.io')(client);
-var cursors = {};
-var users;
-
+/*var ClientObj = {
+	 x:number coordinate,
+	 y:number coordinate,
+	 drawing: true || false,
+	 id: client id	
+  	}
+var CanvasData = {
+	canvasData : image data
+}*/
 io.on('connection', function (socket) {
 	socket.on('mousemove', function (data) {
 
@@ -17,17 +22,17 @@ io.on('connection', function (socket) {
 	game.mouseMove(socket, data);
 	}
   });
-
         socket.on('roundstart', function(data){
 	var game = socketDict[socket.id];
   	if(typeof game != 'countdown') {
 	io.sockets.emit('mousemoving', data);
-	socket.emit("ClientObj",{
-	 x:number coordinate,
-	 y:number coordinate,
-	 drawing: true || false,
-	 id: client id	
-  	}
+	//socket.emit(ClientObj);
+	  socket.emit("ClientObj",{
+		 x:number coordinate,
+		 y:number coordinate,
+		 drawing: true || false,
+		 id: client id	
+  	  }  
    });
 	socket.on('roundover', function(data){
 	var game = socketDict[socket.id];
@@ -35,8 +40,10 @@ io.on('connection', function (socket) {
 	if(typeof game != 'undefined'){
 	game.mouseMove(socket, data);
 	}
-	socket.emit('CanvasData',{
-	canvasData: image data
-	}
-  });
+	//socket.emit(CanvasData);
+	   socket.emit('CanvasData',{
+		canvasData: image data
+	   }
+  }); 
+	
 });
