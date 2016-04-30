@@ -21,7 +21,7 @@ $(function(){
 		username_button = $('#username_button'),
         timer = $('#timer'),
         guess_word = $('#guess_word'),
-        guess_button = $('guess_button');
+        guess_button = $('#guess_button');
 	
 	// Generate an unique ID
 	var id = Math.round($.now()*Math.random());
