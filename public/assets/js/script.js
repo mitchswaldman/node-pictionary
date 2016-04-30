@@ -1,5 +1,3 @@
-// var _ = require('underscore');
-
 $(function(){
 
 	// This demo depends on the canvas element
@@ -34,44 +32,60 @@ $(function(){
 
 	var socket = io.connect('/');
 	socket.on('roundstart', function(data){
-        // var team = _.first(data.game.teams, function(team){
-        //     _.some(team.members, function(member){
-        //         var member = member.socketId.contains(socket.id);
-        //     });
-        // });
+        // Find client
+        _.find(data.game.teams, function(team){
+            return _.find(team.members, function(member){
+                if (member.socketId.includes(socket.id)) {
+                    return client = member;
+                }
+            });
+        });
+        console.log(client);
 		// update a div with team.score
 		// can get a reference to the member object
 		// if(member.isDrawer) enable the canvas.
         ctx.clearRect(0, 0, 1900, 1000); // Hard-coded length and width for now.
+        if(client.isDrawer) {
+            document.getElementById('guess_word').style.visibility = 'hidden';
+            // enable canvas
+        }
+        else {
+            document.getElementById('guess_word').style.visibility = 'visible';
+        }
         document.getElementById('word').innerHTML = data.game.word;
+        // update scores
 		console.log('round start');
 		console.log(data);
 	});
 
 	socket.on('gamepause', function(data){
-		console.log('game pause');
         document.getElementById('time').innerHTML = '';
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        console.log('game pause');
 		console.log(data);
 	});
 
 	socket.on('roundover', function(data){
+        // broadcast snapshot for drawing client
 		console.log('round over');
 		console.log(data);
 	});
 
 	socket.on('gametime', function(data){
-		console.log('game time');
         document.getElementById('time').innerHTML = data.secondsLeft;
+		console.log('game time');
 		console.log(data);
 	});
 
 	socket.on('drawingreview', function(data){
+        // display drawings on canvas
+        // clear canvas
 		console.log('drawing review');
 		console.log(data);
 	});
 
 	socket.on('gameover', function(data){
+        // broadcast snapshot 
 		console.log('gameover');
 		console.log(data);
 	});
