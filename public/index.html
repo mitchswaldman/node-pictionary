@@ -6,7 +6,6 @@
         
         <!-- The stylesheets -->
         <link rel="stylesheet" href="/assets/css/styles.css" />
-        
         <!--[if lt IE 9]>
           <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -32,21 +31,23 @@
 			<input type="text" name="username"></input>
 			<button id="username_button">Submit</button>
 		</hgroup>
-    
-        <div id="timer">
-            <h1>Time left:</h1>
-            <h2 id="time"></h2>
-        </div>
-    
-        <div id="draw">
-            <h1>You must draw: </h1>
-            <h2 id="word"></h2>
-        </div>
-    
-        <div id="guess_word">
-            <h1>Guess the word!</h1>
-            <input type="text" name="guess"></input>
-            <button id="guess_button">Submit</button>
+    	<div  class="row">
+	        <div class="mainBox" id="timer">
+	            <h1>Time</h1>
+	            <h2 id="time"></h2>
+	        </div>	
+
+	        <div class="mainBox" id="scoreBox">
+	        	<h1> Score </h1>
+	        	<h2 id="score"></h2>
+	        </div>
+
+	        <div class="mainBox" id="guess_word">
+	            <h1 id="drawOrGuessHeader">Guess</h1>
+	            <input type="text" name="guess" id="guessInput"></input>
+	            <button id="guess_button">Submit</button>
+            	<h2 id="word"></h2>
+        	</div>	
         </div>
 		
         <footer>

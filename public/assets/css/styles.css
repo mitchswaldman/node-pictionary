@@ -8,6 +8,28 @@
 	padding:0;
 }
 
+/*-------------------------
+	Main UI Boxes
+--------------------------*/
+.row {
+	position: fixed;
+	width: 100%;
+	margin: auto;
+	left: 2%;
+	top: 5px;
+}
+
+.mainBox {
+	display: inline-block;
+	margin: auto;
+	border-radius: 5px;
+	width: 32%;
+	top: 5px;
+	height: 100px;
+	color: #FFF;
+}
+
+
 
 /*-------------------------
 	General Styles
@@ -15,7 +37,7 @@
 
 
 html{
-	background:url('../img/bg.png') repeat #e4e4e4;
+	/*background:url('../img/bg.png') repeat #e4e4e4;*/
 		
 	/* This will hide the extra canvas if the screen is small */
 	overflow:hidden;
@@ -39,6 +61,9 @@ section, footer, header{
 	display: block;
 }
 
+canvas {
+	float: left;
+}
 
 /*-------------------------
 	Main Area
@@ -46,7 +71,7 @@ section, footer, header{
 
 hgroup{
 	position: fixed;
-	background-color: rgba(255, 255, 255, 0.7);
+	background-color: rgba(199,186,180, 0.7);
 	width: 400px;
 	height: 78px;
 	top: 50%;
@@ -74,38 +99,26 @@ h3{
 	font-size: 12px;
 	font-weight: normal;
 	font-style: italic;
-	color: #999;
 }
 
 #timer {
-    position: fixed;
-	width: 150px;
-	height: 100px;
+	background-color: rgba(237,106,99, 1);
     text-align: center;
-	top: 0%;
-	left: 50%;
-	color: #555;
 }
 
 #draw {
-    position: fixed;
-	width: 150px;
-	height: 150px;
+	background-color: rgba(84,88,91, 1);
     text-align: center;
-    bottom: 0%;
-	left: 50%;
-	color: #555;
 }
 
 #guess_word {
-    position: fixed;
-    visibility: hidden;
-	width: 250px;
-	height: 78px;
-	bottom: 10%;
-	right: 0%;
+	background-color: rgba(84,88,91, 1);
 	text-align: center;
-	color: #555;
+}
+
+#scoreBox {
+	background-color: rgba(214,82,119, 1);
+	text-align: center;
 }
 
 #cursors{

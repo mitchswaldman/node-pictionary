@@ -18,6 +18,7 @@ $(function(){
 		username_entry = $('#username_entry'),
 		username_button = $('#username_button'),
         timer = $('#timer'),
+        wordBox = $('#draw'),
         guess_word = $('#guess_word'),
         guess_button = $('#guess_button');
 	
@@ -26,11 +27,12 @@ $(function(){
 	
 	// A flag for drawing activity
 	var drawing = false;
-
+	var currentUserIsDrawer = false;
 	var clients = {};
 	var cursors = {};
 
 	var socket = io.connect('/');
+	var client;
 	socket.on('roundstart', function(data){
         // Find client
         _.find(data.game.teams, function(team){
@@ -44,15 +46,20 @@ $(function(){
 		// update a div with team.score
 		// can get a reference to the member object
 		// if(member.isDrawer) enable the canvas.
-        ctx.clearRect(0, 0, 1900, 1000); // Hard-coded length and width for now.
+        ctx.clearRect(0, 0, canvas.width(), canvas.height()); // Hard-coded length and width for now.
         if(client.isDrawer) {
-            document.getElementById('guess_word').style.visibility = 'hidden';
-            // enable canvas
+        	$('#drawOrGuessHeader').html('Draw');
+            $('#guessInput').hide();
+            $('#guess_button').hide();
+            $('#word').show();
         }
         else {
-            document.getElementById('guess_word').style.visibility = 'visible';
+            $('#drawOrGuessHeader').html('Guess');
+            $('#word').hide();
+            $('#guessInput').show();
+            $('#guess_button').show();
         }
-        document.getElementById('word').innerHTML = data.game.word;
+        $('#word').html(data.game.word);
         // update scores
 		console.log('round start');
 		console.log(data);
@@ -60,7 +67,7 @@ $(function(){
 
 	socket.on('gamepause', function(data){
         document.getElementById('time').innerHTML = '';
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, canvas.width(), canvas.height());
         console.log('game pause');
 		console.log(data);
 	});
@@ -136,6 +143,7 @@ $(function(){
 	var lastEmit = $.now();
 
 	doc.on('mousemove',function(e){
+		if(client && !client.isDrawer) return;
 		if($.now() - lastEmit > 30){
 			socket.emit('mousemove',{
 				'x': e.pageX,
@@ -167,7 +175,6 @@ $(function(){
     guess_button.on('click', function(e) {
         var guess = $('input[name="guess"]').val();
         socket.emit('guess', {guess: guess});
-        guess_word.fadeOut();
     });
     
 	// Remove inactive clients after 10 seconds of inactivity
