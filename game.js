@@ -9,6 +9,7 @@ function Game(){
 	this.hasRoom = true;
 	this.word = "";
 	this.memberSocketDict = {};
+	this.wordRetriever = new WordRetrieval();
 }
 
 Game.MAX_TEAMS_PER_GAME = 2;
@@ -88,20 +89,22 @@ Game.prototype.mouseMove = function(socket, data){
 }
 
 Game.prototype.roundStart = function(){
-	console.log('round start');
-	clearTimeout(this.roundoverTimeout);
+	this.clearTimers();
 	this.setDrawers();
-	this.word = this.nextWord();
-	var data = {
-		game : {
-			teams : this.teams,
-			scoreToWin : this.scoreToWin,
-			word : this.word
-		}
-	};
-	this.broadcastToGame('roundstart', data);
 	var self = this;
-	this.roundCountdown = setTimeout(function(){self.gameTime.call(self);}, 3000);
+	this.nextWord().exec(function(err, words){
+		self.word = words[0].word;
+		var data = {
+			game : {
+				teams : self.teams,
+				scoreToWin : self.scoreToWin,
+				word : self.word
+			}
+		};
+		self.broadcastToGame('roundstart', data);
+		self.roundCountdown = setTimeout(function(){self.gameTime.call(self);}, 3000);	
+	});
+	
 }
 
 Game.prototype.setDrawers = function(){
@@ -113,7 +116,7 @@ Game.prototype.setDrawers = function(){
 }
 
 Game.prototype.gameTime = function(){
-	clearTimeout(this.roundCountdown);
+	this.clearTimers();
 	var seconds = Game.ROUND_TIME;
 	var self = this;
 	var func = function(){
@@ -146,9 +149,7 @@ Game.prototype.broadcastSecondsToGame = function(seconds){
 }
 
 Game.prototype.gamePause = function(){
-	clearInterval(this.gameTimeInterval);
-	clearInterval(this.timeoutInterval);
-	clearTimeout(this.roundCountdown);
+	this.clearTimers();
 	var data = {
 		game : {
 			teams : this.teams,
@@ -199,9 +200,13 @@ Game.prototype.broadcastToGame = function(event, data){
 	
 }
 
+Game.prototype.clearTimers = function(){
+	clearInterval(this.gameTimeInterval);
+	clearInterval(this.timeoutInterval);
+	clearTimeout(this.roundCountdown);
+}
 Game.prototype.nextWord = function(){
-	var wordRetriever = new WordRetrieval();
-	return wordRetriever.getWord();
+	return this.wordRetriever.getWord();
 }
 
 module.exports = Game;
