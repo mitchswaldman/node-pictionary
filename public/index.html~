@@ -36,17 +36,20 @@
 	            <h1>Time</h1>
 	            <h2 id="time"></h2>
 	        </div>	
-            <div class="mainBox" id="guess_word">
-                <h1 id="drawOrGuessHeader">Guess</h1>
-                <input type="text" name="guess" id="guessInput"></input>
-                <button id="guess_button">Submit</button>
-                <h2 id="word"></h2>
-            </div>
+
 	        <div class="mainBox" id="scoreBox">
 	        	<h1> Score </h1>
 	        	<h2 id="score"></h2>
-	        </div> 
+	        </div>
+
+	        <div class="mainBox" id="guess_word">
+	            <h1 id="drawOrGuessHeader">Guess</h1>
+	            <input type="text" name="guess" id="guessInput"></input>
+	            <button id="guess_button">Submit</button>
+            	<h2 id="word"></h2>
+        	</div>	
         </div>
+		
         <footer>
 	        <h2><i>Node Pictionary:</i> Pictionary over WebSockets</h2>
         </footer>

@@ -211,4 +211,4 @@ Game.prototype.nextWord = function(){
 	return this.wordRetriever.getWord();
 }
 
-module.exports = Game;
+module.exports = game;
