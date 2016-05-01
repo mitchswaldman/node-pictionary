@@ -15,8 +15,7 @@
 	position: fixed;
 	width: 100%;
 	margin: auto;
-	left: 2%;
-	top: 5px;
+	display: flex;
 }
 
 .mainBox {
@@ -27,6 +26,7 @@
 	top: 5px;
 	height: 100px;
 	color: #FFF;
+	padding: 1em;
 }
 
 
@@ -104,6 +104,7 @@ h3{
 #timer {
 	background-color: rgba(237,106,99, 1);
     text-align: center;
+    float: left;
 }
 
 #draw {
@@ -114,11 +115,14 @@ h3{
 #guess_word {
 	background-color: rgba(84,88,91, 1);
 	text-align: center;
+
 }
 
 #scoreBox {
 	background-color: rgba(214,82,119, 1);
 	text-align: center;
+	float: right;
+
 }
 
 #cursors{
