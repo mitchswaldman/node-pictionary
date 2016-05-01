@@ -43,11 +43,10 @@
 	        </div>
 
 	        <div class="mainBox" id="guess_word">
-			<h1> Guess </h1>
-			<!--<h1 id="drawOrGuessHeader">Guess</h1>  -->
-			<input type="text" name="guess" id="guessInput"></input>
-			<button id="guess_button">Submit</button>
-		    	<h2 id="word"></h2>
+	            <h1 id="drawOrGuessHeader">Guess</h1>
+	            <input type="text" name="guess" id="guessInput"></input>
+	            <button id="guess_button">Submit</button>
+            	<h2 id="word"></h2>
         	</div>	
         </div>
 		

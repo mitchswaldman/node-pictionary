@@ -17,4 +17,4 @@ Database.prototype.connectTo = function () {
     console.log(mongoose.connection.readyState);
 }
 
-module.exports = Database;
+module.exports = database;
