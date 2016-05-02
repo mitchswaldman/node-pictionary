@@ -1,5 +1,6 @@
 $(function(){
 	$('#user_message').hide(0);
+	$('#imageContainer').hide(0);
 	// This demo depends on the canvas element
 	if(!('getContext' in document.createElement('canvas'))){
 		alert('Sorry, it looks like your browser does not support canvas!');
