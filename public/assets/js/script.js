@@ -1,5 +1,5 @@
 $(function(){
-
+	$('#user_message').hide(0);
 	// This demo depends on the canvas element
 	if(!('getContext' in document.createElement('canvas'))){
 		alert('Sorry, it looks like your browser does not support canvas!');
@@ -33,7 +33,9 @@ $(function(){
 
 	var socket = io.connect('/');
 	var client;
+	var roundDuration;
 	socket.on('roundstart', function(data){
+		roundDuration = data.roundDuration;
         // Find client
         _.find(data.game.teams, function(team){
             return _.find(team.members, function(member){
@@ -60,13 +62,17 @@ $(function(){
             $('#guess_button').show();
         }
         $('#word').html(data.game.word);
+        $('#message').html('Ready?');
+        $('#user_message').show(1000);
         // update scores
 		console.log('round start');
 		console.log(data);
 	});
 
 	socket.on('gamepause', function(data){
-        document.getElementById('time').innerHTML = '';
+        $('#time').html('0');
+        $('#message').html('Someone left the room. Hold on. This round won\'t count towards the score.');
+        $('#user_message').show(1000);
         ctx.clearRect(0, 0, canvas.width(), canvas.height());
         console.log('game pause');
 		console.log(data);
@@ -74,11 +80,27 @@ $(function(){
 
 	socket.on('roundover', function(data){
         // broadcast snapshot for drawing client
+        $('#message').html('Stop!\n The correct word was: ' + data.game.word+'.\nThe winning team is: ' + (data.winningTeam ? data.winningTeam : 'No one. You all suck.'));
+        $('#user_message').show(500);
+        var team = _.find(data.game.teams, function(team){
+            return _.some(team.members, function(member){
+                return member.socketId.includes(socket.id);
+            });
+        });
+        if(client.isDrawer){
+	        var imgData = ctx.getImageData(0, 0, canvas.width(), canvas.height());
+	        //socket.emit('snapshot', {snapshot : imgData});
+    	}	
+        $('#score').html(team.score);
 		console.log('round over');
 		console.log(data);
 	});
 
 	socket.on('gametime', function(data){
+		if(data.secondsLeft == roundDuration){
+			$('#message').html(client.isDrawer ? 'Draw!' : 'Guess!');
+			$('#user_message').hide(1000);
+		}
         document.getElementById('time').innerHTML = data.secondsLeft;
 		console.log('game time');
 		console.log(data);

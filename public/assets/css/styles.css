@@ -21,7 +21,6 @@
 .mainBox {
 	display: inline-block;
 	margin: auto;
-	border-radius: 5px;
 	width: 32%;
 	top: 5px;
 	height: 100px;
@@ -82,6 +81,10 @@ hgroup{
 	border-radius: 10px;
 	box-shadow: 0 0 3px rgba(100, 100, 100, 0.1), 0 3px 1px #D4D4D4;
 	color: #555;
+}
+
+#user_message {
+	display : hidden;
 }
 
 h1{

@@ -10,6 +10,7 @@ function Game(){
 	this.word = "";
 	this.memberSocketDict = {};
 	this.wordRetriever = new WordRetrieval();
+	this.snapshots = {};
 }
 
 Game.MAX_TEAMS_PER_GAME = 2;
@@ -75,7 +76,7 @@ Game.prototype.storeSnapshot = function(socket, data){
 	var team = _.find(this.teams, function(t){ return _.some(t.members, function(member){return member.socketId == socket.id;})});
 	this.snapshots[team.name] = data;
 	if(Object.keys(this.snapshots).length == Game.MAX_TEAMS_PER_GAME) {
-		this.drawingreview(this.snapshots);
+		this.drawingReview(this.snapshots);
 	}
 }
 
@@ -100,7 +101,8 @@ Game.prototype.roundStart = function(){
 				teams : self.teams,
 				scoreToWin : self.scoreToWin,
 				word : self.word
-			}
+			},
+			roundDuration : Game.ROUND_TIME
 		};
 		self.broadcastToGame('roundstart', data);
 		self.roundCountdown = setTimeout(function(){self.gameTime.call(self);}, 3000);	
