@@ -28,7 +28,15 @@
 	padding: 1em;
 }
 
+#redTeamImage {
+	border: 5px solid #F22613;
+	margin: 10px;
+}
 
+#blueTeamImage {
+	border: 5px solid #22A7F0;
+	margin: 10px;
+}
 
 /*-------------------------
 	General Styles
@@ -83,9 +91,6 @@ hgroup{
 	color: #555;
 }
 
-#user_message {
-	display : hidden;
-}
 
 h1{
 	font-size: 22px;

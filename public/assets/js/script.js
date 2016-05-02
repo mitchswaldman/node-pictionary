@@ -22,6 +22,17 @@ $(function(){
         guess_word = $('#guess_word'),
         guess_button = $('#guess_button');
 	
+
+	//Set canvas to match window
+	var cvs = document.getElementById('paper');
+	cvs.width = window.innerWidth;
+	cvs.style.width = window.innerWidth;
+	cvs.height = window.innerHeight;
+	cvs.style.height = window.innerHeight;
+
+	//Set image container to same height as canvas
+	$('#imageContainer').css({top: $('#mainBar').position().top + $('#mainBar').height()});
+
 	// Generate an unique ID
 	var id = Math.round($.now()*Math.random());
 	
@@ -35,6 +46,7 @@ $(function(){
 	var client;
 	var roundDuration;
 	socket.on('roundstart', function(data){
+		$('#imageContainer').hide(100);
 		roundDuration = data.roundDuration;
         // Find client
         _.find(data.game.teams, function(team){
@@ -88,8 +100,9 @@ $(function(){
             });
         });
         if(client.isDrawer){
-	        var imgData = ctx.getImageData(0, 0, canvas.width(), canvas.height());
-	        //socket.emit('snapshot', {snapshot : imgData});
+	        var imgData = document.getElementById('paper').toDataURL();
+	        socket.emit('snapshot', {snapshot : imgData});
+	        console.log(imgData);
     	}	
         $('#score').html(team.score);
 		console.log('round over');
@@ -107,8 +120,21 @@ $(function(){
 	});
 
 	socket.on('drawingreview', function(data){
+		ctx.clearRect(0, 0, canvas.width(), canvas.height()); 
         // display drawings on canvas
         // clear canvas
+        //$('#imageContainer').show({duration: 1000, complete: function(){setTimeout($('#imageContainer').hide(1000), 5000);}});
+        $('#imageContainer').show(1000);
+
+        var blueImage = document.getElementById('blueTeamImage');
+        blueImage.src = data["Blue Team"].snapshot;
+        var redImage =document.getElementById('redTeamImage');
+        redImage.src = data["Red Team"].snapshot;
+        var canvasRatio = 2.1;
+        blueImage.width = canvas.width() / canvasRatio;
+        blueImage.height = canvas.height() / canvasRatio;
+        redImage.width = canvas.width() / canvasRatio;
+        redImage.height = canvas.height() / canvasRatio;
 		console.log('drawing review');
 		console.log(data);
 	});

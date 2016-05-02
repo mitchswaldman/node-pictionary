@@ -29,7 +29,8 @@ Game.prototype.addMember = function(socket, username) {
 	var member = {
 		username: username,
 		socketId: socket.id, //Id will have a '#/' appended to the id.
-		isDrawer: false
+		isDrawer: false,
+		team: ""
 	};
 	if(typeof team != 'undefined'){
 		team.members.push(member);
@@ -49,6 +50,7 @@ Game.prototype.addMember = function(socket, username) {
 		this.teams.push(team);
 		this.memberSocketDict[member.socketId] = socket;
 	} 
+	member.team = team.name;
 }
 
 Game.prototype.dropMember = function(socket) {
