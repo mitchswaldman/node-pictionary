@@ -21,7 +21,9 @@ $(function(){
         timer = $('#timer'),
         wordBox = $('#draw'),
         guess_word = $('#guess_word'),
-        guess_button = $('#guess_button');
+        guess_button = $('#guess_button'),
+        username_field = $('#username_field'),
+        guessInput = $('#guessInput');
 	
 
 	//Set canvas to match window
@@ -264,4 +266,18 @@ $(function(){
         ctx.closePath();
 	}
 
+	guessInput.on('keydown', function(key){
+		if (key.which == 13) {
+			var guess = $('input[name="guess"]').val();
+			socket.emit('guess', {guess: guess});
+		};
+	});
+
+	username_field.on('keydown', function(key){
+		if (key.which == 13) {
+			var username = $('input[name="username"]').val();
+			socket.emit('signon', {username: username});
+			username_entry.fadeOut();
+		};
+	});
 });
