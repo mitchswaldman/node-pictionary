@@ -140,7 +140,20 @@ $(function(){
 	});
 
 	socket.on('gameover', function(data){
-        // broadcast snapshot 
+        // broadcast snapshot for drawing client
+        $('#message').html('Stop!\n The correct word was: ' + data.game.word+'.\nThe winner of the game is: ' + (data.winningTeam ? data.winningTeam : 'No one. You all suck.'));
+        $('#user_message').show(500);
+        var team = _.find(data.game.teams, function(team){
+            return _.some(team.members, function(member){
+                return member.socketId.includes(socket.id);
+            });
+        });
+        if(client.isDrawer){
+	        var imgData = document.getElementById('paper').toDataURL();
+	        socket.emit('snapshot', {snapshot : imgData});
+	        console.log(imgData);
+    	}	
+        $('#score').html(team.score);
 		console.log('gameover');
 		console.log(data);
 	});
