@@ -15,7 +15,7 @@ function Game(){
 
 Game.MAX_TEAMS_PER_GAME = 2;
 Game.MAX_MEMBERS_PER_TEAM = 2;
-Game.ROUND_TIME = 10; //seconds
+Game.ROUND_TIME = 60; //seconds
 Game.TIMEOUT_TIME = 10000; //milliseconds
 
 Game.prototype.addTeam = function(team){
