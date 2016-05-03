@@ -1,102 +1,22 @@
-// // Including libraries
-
-// var app = require('http').createServer(handler),
-// 	io = require('socket.io').listen(app),
-// 	static = require('node-static'); // for serving files
-
-// // This will make all the files in the current folder
-// // accessible from the web
-// var fileServer = new static.Server('./');
-	
-// // This is the port for our web server.
-// // you will need to go to http://localhost:8080 to see it
-// app.listen(8080);
-
-// // If the URL of the socket server is opened in a browser
-// function handler (request, response) {
-
-// 	request.addListener('end', function () {
-//         fileServer.serve(request, response);
-//     });
-// }
-
-// // Delete this row if you want to see debug messages
-// //io.set('log level', 1);
-
-// // Listen for incoming connections from clients
-// io.sockets.on('connection', function (socket) {
-
-// 	// Start listening for mouse move events
-// 	socket.on('mousemove', function (data) {
-		
-// 		// This line sends the event (broadcasts it)
-// 		// to everyone except the originating client.
-// 		socket.broadcast.emit('moving', data);
-// 	});
-// });
-
-
 // PORT TO EXPRESS
 var express = require('express');
 var app = require('express')();
 var bodyParser = require('body-parser');
-// var methodOverride = ('methodOverride');
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var _ = require('underscore');
 var mongoose = require('mongoose');
-//var URL = 'mongodb://172username:172password@ec2-52-32-28-93.us-west-2.compute.amazonaws.com:27017/pictionarydb';
 var Game = require('./Game');
 var games = [];
 var socketDict = {};
 var database = require('./Database');
 var wordRetrival = require('./word-retrival');
-// var Schema = mongoose.Schema,
-//     ObjectId = Schema.ObjectId;
-// var Schema_Word = new mongoose.Schema({
-//     _id     : ObjectId,
-//     word_id : Number,
-//     word    : String
-// });
 server.listen(process.env.PORT || 8080);
 
 app.use(express.static(__dirname + '/public'));
 
 var db = new database();
 db.connectTo();
-
-var wr = new wordRetrival();
-// retrive random word from db
-var testword;
-for (var i = 0; i < 5; i++) {
-  testword = wr.getWord();
-  testword.exec(function(err, wordString){
-    if (err) {return console.log(err)};
-    wordString.forEach(function(wrd){
-      console.log(wrd.word);
-    });
-  });
-};
-
-// mongoose.connect(URL);
-// // CONNECTION EVENTS // When successfully connected 
-// mongoose.connection.on('connected', function () { console.log('Mongoose default connection open to ' + URL); }); 
-// // If the connection throws an error 
-// mongoose.connection.on('error',function (err) { console.log('Mongoose default connection error: ' + err); }); 
-// // When the connection is disconnected 
-// mongoose.connection.on('disconnected', function () { console.log('Mongoose default connection disconnected'); });
-
-// mongoose.connection.once('open', function(){
-//     console.log("CONNECTED");
-//     var collection = mongoose.model('pictionary_collection', Schema_Word, 'pictionary_collection');
-//     collection.find(function(err, word){
-//         if (err) {
-//             console.log(err);
-//         } 
-//         console.log(word);
-//     });
-// });
-// console.log(mongoose.connection.readyState);
 
 app.get('/', function (req, res) {
   res.sendFile('/index.html');
