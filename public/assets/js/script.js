@@ -49,6 +49,7 @@ $(function(){
 	var client;
 	var roundDuration;
 	socket.on('roundstart', function(data){
+		$('#user_message').animate({top: '50%'}, 500);
 		$('#imageContainer').hide(100);
 		roundDuration = data.roundDuration;
         // Find client
@@ -128,7 +129,7 @@ $(function(){
 	});
 
 	socket.on('drawingreview', function(data){
-		$('#user_message').animate({top: '85%'}, 500, function(){setTimeout(function(){$('#user_message').animate({top: '50%'}, 500);}, 4000)});
+		$('#user_message').animate({top: '85%'}, 500);
 		ctx.clearRect(0, 0, canvas.width(), canvas.height()); 
         // display drawings on canvas
         // clear canvas
