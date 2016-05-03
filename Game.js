@@ -212,6 +212,15 @@ Game.prototype.broadcastToGame = function(event, data){
 	});
 	
 }
+Game.prototype.clearCanvas = function(socket, data){
+	var team = _.find(this.teams, function(t){ return _.some(t.members, function(member){return member.socketId == socket.id;})});
+	var self = this;
+	_.each(team.members, function(member){
+		if(member.socketId != socket.id){
+			self.memberSocketDict[member.socketId].emit('clearcanvas', data);
+		}
+	});	
+}
 
 Game.prototype.clearTimers = function(){
 	clearInterval(this.gameTimeInterval);
@@ -221,5 +230,6 @@ Game.prototype.clearTimers = function(){
 Game.prototype.nextWord = function(){
 	return this.wordRetriever.getWord();
 }
+
 
 module.exports = Game;

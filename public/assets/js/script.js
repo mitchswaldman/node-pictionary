@@ -204,7 +204,9 @@ $(function(){
 		clients[data.id] = data;
 		clients[data.id].updated = $.now();
 	});
-
+	socket.on('clearcanvas', function(data){
+		ctx.clearRect(0, 0, canvas.width(), canvas.height()); // Hard-coded length and width for now.
+	});
 	var prev = {};
 	
 	canvas.on('mousedown',function(e){
@@ -289,6 +291,14 @@ $(function(){
 			socket.emit('guess', {guess: guess});
 		};
 	});
+
+	window.onkeyup = function(key){
+		if((key.keyCode == 67 || key.keyCode == 99) && client.isDrawer){
+			ctx.clearRect(0, 0, canvas.width(), canvas.height()); // Hard-coded length and width for now.
+			socket.emit('clearcanvas', {});
+		}
+
+	};
 
 	username_field.on('keydown', function(key){
 		if (key.which == 13 && !$('#guessInput').is(':disabled')) {

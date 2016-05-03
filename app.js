@@ -62,6 +62,13 @@ io.on('connection', function (socket) {
   	}
   });
 
+  socket.on('clearcanvas', function(data){
+    var game = socketDict[socket.id];
+    if(typeof game != 'undefined') {
+      game.clearCanvas(socket, data);
+    }
+  });
+
   socket.on('mousemove', function (data) {
     //console.log(data);
 
