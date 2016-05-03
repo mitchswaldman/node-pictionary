@@ -49,6 +49,7 @@ $(function(){
 	var client;
 	var roundDuration;
 	socket.on('roundstart', function(data){
+		$('#guessInput').prop('disabled', false);
 		$('#user_message').animate({top: '50%'}, 500);
 		$('#imageContainer').hide(100);
 		roundDuration = data.roundDuration;
@@ -103,6 +104,7 @@ $(function(){
 
 	socket.on('roundover', function(data){
         // broadcast snapshot for drawing client
+        $('#guessInput').prop('disabled', true);
         $('#message').html('Stop!\n The correct word was: ' + data.game.word+'.\nThe winning team is: ' + (data.winningTeam ? data.winningTeam : 'No one. You all suck.'));
         $('#user_message').show(500);
         var team = _.find(data.game.teams, function(team){
@@ -289,7 +291,7 @@ $(function(){
 	});
 
 	username_field.on('keydown', function(key){
-		if (key.which == 13) {
+		if (key.which == 13 && !$('#guessInput').is(':disabled')) {
 			var username = $('input[name="username"]').val();
 			socket.emit('signon', {username: username});
 			username_entry.fadeOut();
