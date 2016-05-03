@@ -60,6 +60,14 @@ $(function(){
                 }
             });
         });
+        var playerNames = [];
+        _.each(data.game.teams, function(team) { 
+            _.each(team.members, function(member) {
+                playerNames.push(member.username);
+            });
+        });
+        console.log(playerNames);
+        $('#usernameList').html(playerNames.toString());
         // update a div with team.score
 		// can get a reference to the member object
 		// if(member.isDrawer) enable the canvas.
@@ -79,12 +87,6 @@ $(function(){
         $('#word').html(data.game.word);
         $('#message').html('Ready?');
         $('#user_message').show(1000);
-        if (client.team == "Red Team") {
-            document.getElementById('scoreBox').style.backgroundColor = '#F22613';
-        }
-        else {
-            document.getElementById('scoreBox').style.backgroundColor = '#22A7F0';
-        }
         // update scores
 		console.log('round start');
 		console.log(data);
@@ -152,8 +154,7 @@ $(function(){
 	socket.on('teaminfo', function(data){
 		console.log('teaminfo');
 		console.log(data);
-		$('#usernameDisplay').html(data.member.username + '. You are on the ' + data.member.team);
-		$('#usernameDisplay').css({'background-color': String(data.member.team).includes('Red') ? '#F22613' : '#22A7F0'});
+        $('#scoreBox').css({'background-color': String(data.member.team).includes('Red') ? '#F22613' : '#22A7F0'});
 	});
 
 	socket.on('gameover', function(data){
