@@ -59,8 +59,7 @@ $(function(){
                 }
             });
         });
-        console.log(client);
-		// update a div with team.score
+        // update a div with team.score
 		// can get a reference to the member object
 		// if(member.isDrawer) enable the canvas.
         ctx.clearRect(0, 0, canvas.width(), canvas.height()); // Hard-coded length and width for now.
@@ -79,6 +78,12 @@ $(function(){
         $('#word').html(data.game.word);
         $('#message').html('Ready?');
         $('#user_message').show(1000);
+        if (client.team == "Red Team") {
+            document.getElementById('scoreBox').style.backgroundColor = '#F22613';
+        }
+        else {
+            document.getElementById('scoreBox').style.backgroundColor = '#22A7F0';
+        }
         // update scores
 		console.log('round start');
 		console.log(data);
