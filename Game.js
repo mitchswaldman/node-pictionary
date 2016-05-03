@@ -66,8 +66,8 @@ Game.prototype.isFull = function(){
 }
 
 Game.prototype.checkGuess = function(socket, data) {
-	console.log("Checking guess: " + data.guess);
-	if(data.guess.toLowerCase().trim() == this.word) {
+	console.log("Checking guess: " + data.guess.to);
+	if(data.guess.toLowerCase().trim() == this.word.toLowerCase().trim()) {
 		var team = _.find(this.teams, function(t){ return _.some(t.members, function(member){return member.socketId == socket.id;})});
 		team.score++;
 		this.roundOver(team.name);	
