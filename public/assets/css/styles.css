@@ -145,7 +145,14 @@ h3{
 	background-color: rgba(214,82,119, 1);
 	text-align: center;
 	float: right;
+}
 
+#clearInstruction {
+    position: fixed;
+    width: 100px;
+    height: 10px;
+    bottom: 0%;
+    left: 50%;
 }
 
 #cursors{
