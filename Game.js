@@ -51,6 +51,7 @@ Game.prototype.addMember = function(socket, username) {
 		this.memberSocketDict[member.socketId] = socket;
 	} 
 	member.team = team.name;
+	socket.emit('teaminfo', {member: member});
 }
 
 Game.prototype.dropMember = function(socket) {

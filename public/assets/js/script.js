@@ -128,6 +128,7 @@ $(function(){
 	});
 
 	socket.on('drawingreview', function(data){
+		$('#user_message').animate({top: '85%'}, 500, function(){setTimeout(function(){$('#user_message').animate({top: '50%'}, 500);}, 4000)});
 		ctx.clearRect(0, 0, canvas.width(), canvas.height()); 
         // display drawings on canvas
         // clear canvas
@@ -145,6 +146,13 @@ $(function(){
         redImage.height = canvas.height() / canvasRatio;
 		console.log('drawing review');
 		console.log(data);
+	});
+
+	socket.on('teaminfo', function(data){
+		console.log('teaminfo');
+		console.log(data);
+		$('#usernameDisplay').html(data.member.username + '. You are on the ' + data.member.team);
+		$('#usernameDisplay').css({'background-color': String(data.member.team).includes('Red') ? '#F22613' : '#22A7F0'});
 	});
 
 	socket.on('gameover', function(data){
